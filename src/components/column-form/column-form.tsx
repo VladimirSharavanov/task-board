@@ -40,7 +40,10 @@ class ColumnForm extends Component<ColumnFormProps, ColumnFormState> {
 
   public render() {
     return (
-      <div className={styles.wrapper}>
+      <div
+        className={styles.wrapper}
+        id="columnForm"
+      >
         <form
           onSubmit={this.send}
           className={styles.form}

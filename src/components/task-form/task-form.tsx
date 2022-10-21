@@ -40,7 +40,10 @@ class TaskForm extends Component<TaskFormProps, TaskFormState> {
 
   public render() {
     return (
-      <div className={styles.wrapper}>
+      <div
+        className={styles.wrapper}
+        id="taskForm"
+      >
         <form
           onSubmit={this.send}
           className={styles.form}

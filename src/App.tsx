@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import './App.css';
 import ColumnForm from './components/column-form/column-form';
-import TaskForm from './components/task-form.tsx/task-form';
+import TaskForm from './components/task-form/task-form';
 import TaskList from './components/task-list/task-list';
 import { AppState } from './types/app.type';
 import { ColumnFormState } from './types/column-form.type';
@@ -14,6 +14,7 @@ class App extends Component<unknown, AppState> {
     this.state = {
       taskColumns: [],
     };
+    this.enableControl();
   }
 
   public addTask = (form: TaskFormState) => {
@@ -53,8 +54,8 @@ class App extends Component<unknown, AppState> {
       id: task.id,
       title: task.title,
       position: pos,
-    }
-    
+    };
+
     this.setState((state) => {
       state.taskColumns[pos] = {
         ...state.taskColumns[pos],
@@ -63,6 +64,53 @@ class App extends Component<unknown, AppState> {
 
       return { ...state, taskColumns: [...state.taskColumns] };
     });
+  };
+
+  private enableControl = () => {
+    document.addEventListener('keydown', (event) => {
+      if (!event.ctrlKey) {
+        return;
+      }
+
+      event.stopImmediatePropagation();
+
+      const controlList: Record<string, () => void> = {
+        KeyM: this.showColumnForm,
+        Comma: this.showTaskForm,
+      };
+
+      if (controlList[event.code]) { 
+        controlList[event.code]();
+      }
+    });
+  };
+
+  private showColumnForm = () => {
+    const taskForm = document.getElementById('taskForm')!;
+    const columnForm = document.getElementById('columnForm')!;
+
+    if (columnForm.classList.contains('show')) {
+      columnForm.classList.remove('show');
+
+      return;
+    }
+
+    columnForm.classList.add('show');
+    taskForm.classList.remove('show');
+  };
+
+  private showTaskForm = () => {
+    const taskForm = document.getElementById('taskForm')!;
+    const columnForm = document.getElementById('columnForm')!;
+
+    if (taskForm.classList.contains('show')) {
+      taskForm.classList.remove('show');
+
+      return;
+    }
+
+    taskForm.classList.add('show');
+    columnForm.classList.remove('show');
   };
 
   public render() {
